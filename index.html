@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Golf Ball 3D Studio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div>
+        <h1>Golf Ball 3D Studio</h1>
+        <p>Design, light, animate, and export a customizable golf ball.</p>
+      </div>
+      <div class="status" id="status">Ready</div>
+    </header>
+
+    <main class="workspace">
+      <section class="viewer-panel">
+        <div class="viewer-toolbar">
+          <button id="frontView">Front</button>
+          <button id="rearView">Rear</button>
+          <button id="isoView">Isometric</button>
+          <label class="toggle">
+            <input type="checkbox" id="autoRotate" checked />
+            Auto rotate
+          </label>
+        </div>
+
+        <div id="stageWrap" class="ratio-9-16">
+          <canvas id="stage"></canvas>
+          <div class="safe-area" id="safeArea"></div>
+        </div>
+
+        <div class="timeline">
+          <button id="playAnimation">Play preset</button>
+          <label>
+            Duration
+            <input id="duration" type="range" min="2" max="15" value="6" step="1" />
+            <span id="durationValue">6s</span>
+          </label>
+          <label>
+            Animation
+            <select id="animationPreset">
+              <option value="turntable">Turntable</option>
+              <option value="frontReveal">Front reveal</option>
+              <option value="rearReveal">Rear reveal</option>
+              <option value="frontStripeRear">Front → stripe → rear</option>
+              <option value="rollLeftRight">Roll left → right</option>
+              <option value="rollRightLeft">Roll right → left</option>
+              <option value="rollToward">Roll toward camera</option>
+              <option value="sCurve">S-curve roll</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <aside class="controls">
+        <details open>
+          <summary>Ball</summary>
+          <label>
+            Model
+            <select id="ballModel">
+              <optgroup label="Imported real geometry">
+                <option value="uploadedDetailed" selected>Detailed hero ball</option>
+                <option value="uploadedPerformance">Performance ball</option>
+              </optgroup>
+              <optgroup label="Legacy generated models">
+                <option value="blankStandard">Generated — Automatic quality</option>
+                <option value="blankTour">Generated — High detail</option>
+                <option value="blankLowDimple">Generated — Balanced</option>
+                <option value="blankHighDimple">Generated — Mobile</option>
+              </optgroup>
+            </select>
+          </label>
+          <div id="activeMeshReadout" class="mesh-readout">Loading imported detailed hero mesh…</div>
+          <label>
+            Ball color
+            <input id="ballColor" type="color" value="#ffffff" />
+          </label>
+          <label>
+            Cover appearance
+            <select id="coverPreset">
+              <option value="clean">Clean neutral cover</option>
+              <option value="newPbr">Supplied new-ball texture</option>
+              <option value="usedPbr">Supplied lightly-used texture</option>
+            </select>
+          </label>
+          <label>
+            Finish
+            <select id="finish">
+              <option value="satin">Satin</option>
+              <option value="matte">Matte</option>
+              <option value="gloss">Gloss</option>
+              <option value="pearl">Pearl</option>
+            </select>
+          </label>
+        </details>
+
+        <details open>
+          <summary>Personalization</summary>
+
+          <div class="zone-card">
+            <div class="zone-title">
+              <strong>Front print</strong>
+              <label class="toggle"><input type="checkbox" id="frontEnabled" checked /> Show</label>
+            </div>
+            <input id="frontUpload" type="file" accept="image/png,image/jpeg,image/webp" />
+            <button id="clearFront">Clear front</button>
+          </div>
+
+          <div class="zone-card">
+            <div class="zone-title">
+              <strong>Rear print</strong>
+              <label class="toggle"><input type="checkbox" id="rearEnabled" checked /> Show</label>
+            </div>
+            <input id="rearUpload" type="file" accept="image/png,image/jpeg,image/webp" />
+            <button id="clearRear">Clear rear</button>
+          </div>
+
+          <div class="zone-card">
+            <div class="zone-title">
+              <strong>180° stripe</strong>
+              <label class="toggle"><input type="checkbox" id="stripeEnabled" checked /> Show</label>
+            </div>
+            <label>
+              Stripe color
+              <input id="stripeColor" type="color" value="#111111" />
+            </label>
+            <label>
+              Stripe width
+              <input id="stripeWidth" type="range" min="2" max="28" value="8" />
+            </label>
+            <label>
+              Stripe text
+              <input id="stripeText" type="text" maxlength="36" placeholder="Optional text" />
+            </label>
+          </div>
+        </details>
+
+        <details open>
+          <summary>Studio</summary>
+          <label>
+            Background
+            <select id="backgroundType">
+              <option value="solid">Solid</option>
+              <option value="gradient">Gradient</option>
+              <option value="transparent">Transparent</option>
+            </select>
+          </label>
+          <label>
+            Background color
+            <input id="backgroundColor" type="color" value="#4a4d52" />
+          </label>
+          <label>
+            Secondary color
+            <input id="backgroundColor2" type="color" value="#777777" />
+          </label>
+          <label>
+            Lighting preset
+            <select id="lightingPreset">
+              <option value="productDark" selected>Realistic dark product studio</option>
+              <option value="clean">Clean product</option>
+              <option value="dramatic">Dramatic</option>
+              <option value="luxury">Luxury</option>
+              <option value="social">Social pop</option>
+              <option value="outdoor">Outdoor</option>
+            </select>
+          </label>
+          <label>
+            Key light
+            <input id="keyLight" type="range" min="0" max="8" step=".1" value="4" />
+          </label>
+          <label>
+            Fill light
+            <input id="fillLight" type="range" min="0" max="5" step=".1" value="1.8" />
+          </label>
+          <label>
+            Rim light
+            <input id="rimLight" type="range" min="0" max="8" step=".1" value="3.2" />
+          </label>
+
+          <div class="surface-card">
+            <strong>Rolling surface</strong>
+            <label>
+              Surface preset
+              <select id="surfacePreset">
+                <option value="whiteStudio">White studio</option>
+                <option value="grass">Grass</option>
+                <option value="puttingGreen">Putting green</option>
+                <option value="wood">Wood</option>
+                <option value="glass">Glass</option>
+                <option value="brick">Brick</option>
+                <option value="concrete">Concrete</option>
+                <option value="marble">Marble</option>
+                <option value="sand">Sand</option>
+                <option value="blackAcrylic">Black acrylic</option>
+                <option value="carpet">Carpet</option>
+                <option value="metal">Brushed metal</option>
+                <option value="rubber">Rubber mat</option>
+                <option value="transparent">Transparent / no floor</option>
+              </select>
+            </label>
+            <label>
+              Texture scale
+              <input id="surfaceScale" type="range" min="1" max="16" step=".5" value="6" />
+            </label>
+            <label>
+              Roughness
+              <input id="surfaceRoughness" type="range" min="0" max="1" step=".01" value=".72" />
+            </label>
+            <label>
+              Reflection
+              <input id="surfaceReflection" type="range" min="0" max="1" step=".01" value=".08" />
+            </label>
+            <label>
+              Surface relief
+              <input id="surfaceBump" type="range" min="0" max=".16" step=".005" value=".02" />
+            </label>
+            <label>
+              Rolling resistance
+              <input id="rollingResistance" type="range" min="0" max="1" step=".01" value=".12" />
+            </label>
+            <label>
+              Roll bumpiness
+              <input id="rollBumpiness" type="range" min="0" max=".25" step=".005" value="0" />
+            </label>
+            <p class="surface-readout" id="surfaceReadout">Smooth studio floor · low rolling resistance</p>
+          </div>
+
+          <label class="toggle">
+            <input type="checkbox" id="floorEnabled" checked />
+            Floor and shadow
+          </label>
+        </details>
+
+        <details open>
+          <summary>Camera & Format</summary>
+          <label>
+            Aspect ratio
+            <select id="aspectRatio">
+              <option value="9:16" selected>9:16 Vertical</option>
+              <option value="16:9">16:9 Horizontal</option>
+              <option value="1:1">1:1 Square</option>
+              <option value="4:5">4:5 Portrait</option>
+              <option value="3:2">3:2 Photo</option>
+            </select>
+          </label>
+          <label>
+            Lens
+            <select id="lens">
+              <option value="24">24 mm</option>
+              <option value="35">35 mm</option>
+              <option value="50" selected>50 mm</option>
+              <option value="85">85 mm</option>
+              <option value="120">120 mm Macro</option>
+            </select>
+          </label>
+          <label>
+            Camera distance
+            <input id="cameraDistance" type="range" min="2.8" max="8" value="4.8" step=".1" />
+          </label>
+          <label class="toggle">
+            <input type="checkbox" id="safeAreaToggle" />
+            Show social safe area
+          </label>
+        </details>
+
+        <details open>
+          <summary>Export</summary>
+          <label>
+            Resolution
+            <select id="resolution">
+              <option value="1080">1080p</option>
+              <option value="1440">1440p</option>
+              <option value="2160">4K</option>
+            </select>
+          </label>
+          <label>
+            Frame rate
+            <select id="fps">
+              <option value="24">24 fps</option>
+              <option value="30" selected>30 fps</option>
+              <option value="60">60 fps</option>
+            </select>
+          </label>
+          <button class="primary" id="exportPng">Export PNG still</button>
+          <button class="primary" id="recordWebm">Record WebM animation</button>
+          <p class="note">
+            WebM works directly in modern desktop browsers. Transparent video support depends on browser and editor.
+          </p>
+        </details>
+      </aside>
+    </main>
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"
+      }
+    }
+  </script>
+  <script>
+    window.addEventListener('error', function (event) {
+      const status = document.getElementById('status');
+      const wrap = document.getElementById('stageWrap');
+      if (status) status.textContent = 'Preview error';
+      if (wrap && !wrap.querySelector('.preview-error')) {
+        wrap.insertAdjacentHTML('beforeend', '<div class="preview-error"><strong>The 3D preview failed to load.</strong><span>Check your internet connection, refresh the page, and make sure hardware acceleration is enabled.</span></div>');
+      }
+    });
+  </script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
