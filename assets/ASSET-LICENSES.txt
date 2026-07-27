@@ -1,3 +1,0 @@
-Golf ball GLB models and ball texture maps: generated specifically for this project; unrestricted use by the recipient.
-Studio softbox HDR environment: generated specifically for this project; unrestricted use by the recipient.
-No branded geometry, logos, or third-party model assets are included.
