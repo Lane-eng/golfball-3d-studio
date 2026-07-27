@@ -1,0 +1,192 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #111;
+  color: #f5f5f5;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #app {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background: #111;
+}
+
+button, select, input {
+  font: inherit;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+}
+
+.viewer-pane {
+  min-width: 0;
+  position: relative;
+  padding: 18px;
+  background: #101010;
+}
+
+.viewer-frame {
+  position: relative;
+  min-height: calc(100vh - 36px);
+  border: 1px solid #303030;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #4b4f55, #15171a);
+}
+
+#viewer {
+  width: 100%;
+  height: calc(100vh - 36px);
+  display: block;
+}
+
+.toolbar {
+  position: absolute;
+  z-index: 4;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.toolbar button {
+  border: 1px solid #4b4b4b;
+  background: rgba(20,20,20,.9);
+  color: #fff;
+  border-radius: 9px;
+  padding: 9px 12px;
+  cursor: pointer;
+}
+
+.sidebar {
+  border-left: 1px solid #303030;
+  background: #171717;
+  padding: 18px;
+  overflow: auto;
+  max-height: 100vh;
+}
+
+.sidebar h1 {
+  margin: 0 0 14px;
+  font-size: 1.15rem;
+}
+
+.panel {
+  border-top: 1px solid #343434;
+  padding: 16px 0;
+}
+
+.panel:first-of-type {
+  border-top: 0;
+}
+
+.panel h2 {
+  margin: 0 0 12px;
+  font-size: .95rem;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 12px;
+  color: #ddd;
+  font-size: .88rem;
+}
+
+select, input[type="color"], input[type="range"], input[type="file"] {
+  width: 100%;
+}
+
+select, input[type="file"] {
+  border: 1px solid #444;
+  border-radius: 9px;
+  background: #222;
+  color: #fff;
+  padding: 9px;
+}
+
+input[type="color"] {
+  height: 40px;
+  padding: 3px;
+  border: 1px solid #444;
+  border-radius: 9px;
+  background: #222;
+}
+
+.status-card,
+.diagnostic-card {
+  border: 1px solid #39424c;
+  border-radius: 10px;
+  padding: 10px;
+  background: #111820;
+  color: #cfe4f8;
+  font-size: .82rem;
+  line-height: 1.4;
+}
+
+.diagnostic-card.error {
+  border-color: #753b3b;
+  background: #251414;
+  color: #ffd0d0;
+}
+
+.error-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: none;
+  place-items: center;
+  padding: 24px;
+  background: rgba(12,12,12,.95);
+}
+
+.error-overlay.visible {
+  display: grid;
+}
+
+.error-box {
+  width: min(620px, 100%);
+  border: 1px solid #844;
+  border-radius: 14px;
+  padding: 20px;
+  background: #231515;
+}
+
+.error-box h2 {
+  margin-top: 0;
+}
+
+.error-box pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #ffd7d7;
+  font-size: .8rem;
+}
+
+@media (max-width: 880px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    max-height: none;
+    border-left: 0;
+    border-top: 1px solid #303030;
+  }
+
+  #viewer,
+  .viewer-frame {
+    min-height: 65vh;
+    height: 65vh;
+  }
+}
